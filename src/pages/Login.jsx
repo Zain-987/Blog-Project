@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import InputComp from "../components/InputComp";
 import { setUser } from "../redux/UserSlice";
 import { useDispatch } from "react-redux";
+import OAuth from "../components/OAuth";
 const yupSchema = yup.object().shape({
   username: yup
     .string()
@@ -76,6 +77,7 @@ const Login = () => {
         >
           {loading ? <span>Loading...</span> : "Login"}
         </button>
+        <OAuth />
         <p>
           New Here ?{" "}
           <Link to={"/signup"} className="text-blue-500">

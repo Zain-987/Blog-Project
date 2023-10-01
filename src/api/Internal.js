@@ -24,3 +24,12 @@ export const loginUser = async (data) => {
         return error
     }
 }
+
+export const googleAuth = async (data) => {
+    try{
+        let response = await api.post("/api/v1/google/",data)
+        return response
+    }catch(error){
+        return error
+    }
+}

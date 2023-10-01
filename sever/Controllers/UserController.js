@@ -6,11 +6,9 @@ const USERDTO = require("../DTO/USERDTO")
 const registerUser = async (req , res , next) => {
     try{
 
-        let {username , email , password} = req.body
+        let {username , email , password } = req.body
 
         let isUserExists = await UserModel.findOne({email})
-
-
 
         if(isUserExists){
             return next({
@@ -21,9 +19,8 @@ const registerUser = async (req , res , next) => {
 
 
         let hashPassword = hashSync(password,10)
-        let user = await UserModel.create({username , email , password : hashPassword})
+        let user = await UserModel.create({username , email , password : hashPassword })
 
-        console.log(user);
 
          user = new USERDTO(user)
         return res.status(201).json({user})
@@ -36,10 +33,10 @@ const registerUser = async (req , res , next) => {
 const loginUser = async (req , res , next) => {
     try{
 
-        const {username , password} = req.body
+        const {email , password} = req.body
         
 
-        const isUserExists = await UserModel.findOne({username})
+        const isUserExists = await UserModel.findOne({email})
 
         if(!isUserExists){
             return next({
@@ -63,15 +60,36 @@ const loginUser = async (req , res , next) => {
         res.cookie("accesstoken",token,{httpOnly : true , secure : true})
 
         const user = new USERDTO(isUserExists)
-        return res.status(200).json({
-user
-        })
+        return res.status(200).json({user})
 
     }catch(error){
         return next(error)
     }
 }
 
+
+const googleAuth = async (req , res , next) => {
+    try{
+        let {username , email , password , photo } = req.body
+        const user = await UserModel.findOne({email})
+        if(!user){
+
+        let hashPassword = hashSync(password,10)
+        let user = await UserModel.create({username , email , password : hashPassword , photo })
+        }
+
+        const token = jwt.sign({payload : user._id},SECRET_KEY )
+
+        res.cookie("accesstoken",token,{httpOnly : true , secure : true})
+
+        const user01 = new USERDTO(user)
+        return res.status(200).json({user : user01})
+        
+    }catch(error){
+        return next(error)
+    }
+}
+
 module.exports = {
-    registerUser , loginUser
+    registerUser , loginUser , googleAuth
 }
