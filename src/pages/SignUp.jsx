@@ -7,6 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { registerUser } from "../api/Internal";
 import toast from "react-hot-toast";
 import { RotatingLines } from "react-loader-spinner";
+import OAuth from "../components/OAuth";
 const yupSchema = yup.object().shape({
   username: yup
     .string()
@@ -78,12 +79,14 @@ const SignUp = () => {
         >
           {loading ? <span>Loading...</span> : "Register"}
         </button>
+        <OAuth />
         <p>
           Have an Account ?{" "}
           <Link to={"/login"} className="text-blue-500">
             Login
           </Link>
         </p>
+
         {Errors && <p className="text-red-500">{Errors}</p>}
       </form>
     </section>
