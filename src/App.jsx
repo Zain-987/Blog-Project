@@ -1,5 +1,5 @@
 import React from 'react'
-
+import { Toaster } from 'react-hot-toast';
 import {BrowserRouter ,Routes , Route} from 'react-router-dom'
 import Header from './components/Header'
 import SignUp from './pages/SignUp'
@@ -15,6 +15,7 @@ function App() {
       <Route path='/signup' element={<SignUp/>}/>
       <Route path='/login' element={<h1>Login Page</h1>}/>
     </Routes>
+      <Toaster/>
     </BrowserRouter>
     </>
   )
