@@ -6,6 +6,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { loginUser } from "../api/Internal";
 import toast from "react-hot-toast";
 import InputComp from "../components/InputComp";
+import { setUser } from "../redux/UserSlice";
+import { useDispatch } from "react-redux";
 const yupSchema = yup.object().shape({
   username: yup
     .string()
@@ -20,6 +22,7 @@ const yupSchema = yup.object().shape({
 const Login = () => {
   const navigate = useNavigate();
 
+  const { user } = useDispatch((state) => state.user);
   const [Error, setError] = useState("");
   const {
     handleSubmit,
@@ -31,11 +34,14 @@ const Login = () => {
   });
   const [loading, setLoading] = useState(false);
 
+  const dispatch = useDispatch();
   const SubmitHandler = async (data) => {
     setLoading(true);
     let response = await loginUser(data);
 
     if (response.status === 200) {
+      dispatch(setUser(response.data.user));
+      console.log(user);
       navigate("/");
       toast.success("Success 👏");
     } else if (response.code === "ERR_BAD_REQUEST") {
@@ -76,7 +82,7 @@ const Login = () => {
             Register
           </Link>
         </p>
-        {Errors && <p className="text-red-500">{Error}</p>}
+        {Error && <p className="text-red-500">{Error}</p>}
       </form>
     </section>
   );
