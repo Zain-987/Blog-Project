@@ -42,6 +42,7 @@ const SignUp = () => {
       toast.success("Success 👏");
     } else if (response.code === "ERR_BAD_REQUEST") {
       setError(response.response.data.message);
+      toast.error("Error Occured");
     }
     setLoading(false);
   };
@@ -80,7 +81,7 @@ const SignUp = () => {
         <p>
           Have an Account ?{" "}
           <Link to={"/login"} className="text-blue-500">
-            Register
+            Login
           </Link>
         </p>
         {Errors && <p className="text-red-500">{Errors}</p>}
